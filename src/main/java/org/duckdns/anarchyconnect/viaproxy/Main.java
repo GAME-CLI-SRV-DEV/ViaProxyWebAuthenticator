@@ -36,18 +36,14 @@ public class Main extends ViaProxyPlugin implements HttpHandler {
 
     @Override
     public void handle(HttpExchange exchange) throws IOException {
-        // Your Java code to be triggered
         System.out.println("ViaProxyConnect: User has entered the website!");
-        // Prepare the response
         HttpClient httpClient = MinecraftAuth.createHttpClient();
         try {
             StepFullJavaSession.FullJavaSession javaSession = MinecraftAuth.JAVA_DEVICE_CODE_LOGIN.getFromInput(httpClient, new StepMsaDeviceCode.MsaDeviceCodeCallback(msaDeviceCode -> {
-                // Method to generate a verification URL and a code for the user to enter on that page
                 System.out.println("Fetched Java Code!");
                 String javaDeviceCode = msaDeviceCode.getUserCode();
                 try {
                     StepFullBedrockSession.FullBedrockSession bedrockSession = MinecraftAuth.BEDROCK_DEVICE_CODE_LOGIN.getFromInput(httpClient, new StepMsaDeviceCode.MsaDeviceCodeCallback(bedrockMsaDeviceCode -> {
-                        // Method to generate a verification URL and a code for the user to enter on that page
                         System.out.println("Fetched Bedrock Code!");
                         String bedrockDeviceCode = bedrockMsaDeviceCode.getUserCode();
                         String response = "<html><body>Java Device Code: " + javaDeviceCode + "<br>Bedrock Device Code: " + bedrockDeviceCode + "</body></html>";
@@ -58,14 +54,17 @@ public class Main extends ViaProxyPlugin implements HttpHandler {
                             os.write(response.getBytes());
                             os.close();
                         } catch (IOException e) {
+                            Logger.LOGGER.error("Error sending response: " + e.getMessage());
                             throw new RuntimeException(e);
                         }
                     }));
                 } catch (Exception e) {
+                    Logger.LOGGER.error("Error during Bedrock session: " + e.getMessage());
                     throw new RuntimeException(e);
                 }
             }));
         } catch (Exception e) {
+            Logger.LOGGER.error("Error during Java session: " + e.getMessage());
             throw new RuntimeException(e);
         }
     }
