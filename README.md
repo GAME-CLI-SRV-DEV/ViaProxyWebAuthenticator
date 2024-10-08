@@ -1,6 +1,10 @@
 # ViaProxyWebAuthenticator BETA - Make ViaProxyConnect Great Again!
 a Web Authenticator Demander for ViaProxy Public instances
 
+> [!CAUTION]
+> this plugin is in beta as the ViaProxy cannot handle plugin actions.
+> Please Use VIAaaS Instead if you are using bedrock.
+
 # How to host Public Instances
 if You are using hosting, you need to just use nip.io or forward their ip to Wildcard DNS Services such as DynuDNS or DuckDNS as the DNS service is for Paid Plan.
 
