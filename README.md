@@ -24,6 +24,9 @@ if You are using hosting, you need to just use nip.io or forward their ip to Wil
 # WARNING FOR PUBLIC INSTANCES
 if the server version has underscore, you have to ommit that part from it.
 
-# Server Version
+# Server Version(Prefix)
  * Bedrock: Bedrock-1.21.3
- * Java 1.21.1: 1.21.1-1.7
+ * Release: 1.21.1 to 1.0.0
+ * Beta b1.8.1 to b1.0.0
+ * Alpha a1.2.6 to a1.0.15
+ * c0.30-CPE to c0.0.15
