@@ -1,0 +1,5 @@
+name: "ViaProxyWebAuthentication"
+version: "1.0.0"
+author: "ExampleDude"
+main: "org.duckdns.anarchyconnect.viaproxy.Main"
+min-version: "3.0.0"

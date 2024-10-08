@@ -1,0 +1,27 @@
+plugins {
+    id 'java'
+}
+
+group = 'org.duckdns.anarchyconnect.viaproxy'
+version = '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+    maven { url "https://repo.viaversion.com/"}
+    maven { url "https://maven.lenni0451.net/everything/"}
+    maven { url "https://repo.minebench.de/"}
+    maven { url "https://repo.opencollab.dev/maven-snapshots"}
+    maven { url "https://repo.opencollab.dev/maven-releases"}
+    maven { url "https://jitpack.io"}
+}
+
+dependencies {
+    compileOnly 'net.raphimc:ViaProxy:3.3.4-SNAPSHOT'
+    testImplementation platform('org.junit:junit-bom:5.9.1')
+    testImplementation 'org.junit.jupiter:junit-jupiter'
+
+}
+
+test {
+    useJUnitPlatform()
+}
