@@ -61,6 +61,9 @@ public class Main extends ViaProxyPlugin implements HttpHandler {
                             throw new RuntimeException(e);
                         }
                     }));
+                    System.out.println("DEBUG - Username: " + javaSession.getMcProfile().getName());
+                    System.out.println("DEBUG - Access token: " + javaSession.getMcProfile().getMcToken().getAccessToken());
+                    System.out.println("DEBUG - Player certificates: " + javaSession.getPlayerCertificates());
                 } catch (Exception e) {
                     throw new RuntimeException(e);
                 }
