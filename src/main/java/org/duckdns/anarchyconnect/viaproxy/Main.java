@@ -12,6 +12,7 @@ import net.raphimc.viaproxy.plugins.ViaProxyPlugin;
 import net.raphimc.viaproxy.proxy.session.UserOptions;
 import net.raphimc.viaproxy.saves.impl.accounts.BedrockAccount;
 import net.raphimc.viaproxy.saves.impl.accounts.MicrosoftAccount;
+import net.raphimc.viaproxy.util.logging.Logger;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -20,14 +21,14 @@ import java.net.InetSocketAddress;
 public class Main extends ViaProxyPlugin implements HttpHandler {
     @Override
     public void onEnable() {
-        System.out.println("We Ran Out of Budget, so we are using STDOUT. LOL.");
+        Logger.LOGGER.info("§bViaProxyConnect Web Authenticator Version 1, Designed for ViaVersion's ViaProxy.");
         HttpServer server = null;
         try {
             server = HttpServer.create(new InetSocketAddress(8000), 0);
             server.createContext("/", this);
             server.setExecutor(null); // creates a default executor
             server.start();
-            System.out.println("Webserver started. You Can Now Authenticate through web.");
+            Logger.LOGGER.info("§bViaProxyConnect: Webserver started. You Can Now Authenticate through web.");
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -36,7 +37,7 @@ public class Main extends ViaProxyPlugin implements HttpHandler {
     @Override
     public void handle(HttpExchange exchange) throws IOException {
         // Your Java code to be triggered
-        System.out.println("User has entered the website!");
+        System.out.println("ViaProxyConnect: User has entered the website!");
         // Prepare the response
         HttpClient httpClient = MinecraftAuth.createHttpClient();
         try {
