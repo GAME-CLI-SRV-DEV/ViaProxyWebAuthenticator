@@ -9,7 +9,7 @@ a Web Authenticator Demander for ViaProxy Public instances
 if You are using hosting, you need to just use nip.io or forward their ip to Wildcard DNS Services such as DynuDNS or DuckDNS as the DNS service is for Paid Plan.
 
 1. Start ViaProxy.
-2. You Need to use Public Wildcard option. however, Geyser Will not do Ping Passthrough, so you have to turn it off. if you are Geyser User, Turn on forward-hostname on.
+2. You Need to use Public Wildcard option. however, Geyser Will not do Ping Passthrough, so you have to turn ping passthrough off. if you are Geyser User, Turn on forward-hostname on.
 3. Now You are hosting an public instance of ViaProxy! the address looks like this: `<Server's Address>_<Server's Port>_<Server's Version>.viaproxy.<yourdomain>:<yourport>`
 
 # List of Public Instances
