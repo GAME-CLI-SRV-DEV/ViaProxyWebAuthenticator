@@ -33,39 +33,52 @@ public class Main extends ViaProxyPlugin implements HttpHandler {
             throw new RuntimeException(e);
         }
     }
+@Override
+public void handle(HttpExchange exchange) throws IOException {
+    System.out.println("ViaProxyConnect: User has entered the website!");
+    HttpClient httpClient = MinecraftAuth.createHttpClient();
+    try {
+        fetchJavaSession(httpClient, exchange);
+    } catch (Exception e) {
+        Logger.LOGGER.error("Error during Java session: " + e.getMessage());
+        throw new RuntimeException(e);
+    }
+}
 
-    @Override
-    public void handle(HttpExchange exchange) throws IOException {
-        System.out.println("ViaProxyConnect: User has entered the website!");
-        HttpClient httpClient = MinecraftAuth.createHttpClient();
+private void fetchJavaSession(HttpClient httpClient, HttpExchange exchange) {
+    StepFullJavaSession.FullJavaSession javaSession = MinecraftAuth.JAVA_DEVICE_CODE_LOGIN.getFromInput(httpClient, msaDeviceCode -> {
+        System.out.println("Fetched Java Code!");
+        String javaDeviceCode = msaDeviceCode.getUserCode();
         try {
-            StepFullJavaSession.FullJavaSession javaSession = MinecraftAuth.JAVA_DEVICE_CODE_LOGIN.getFromInput(httpClient, new StepMsaDeviceCode.MsaDeviceCodeCallback(msaDeviceCode -> {
-                System.out.println("Fetched Java Code!");
-                String javaDeviceCode = msaDeviceCode.getUserCode();
-                try {
-                    StepFullBedrockSession.FullBedrockSession bedrockSession = MinecraftAuth.BEDROCK_DEVICE_CODE_LOGIN.getFromInput(httpClient, new StepMsaDeviceCode.MsaDeviceCodeCallback(bedrockMsaDeviceCode -> {
-                        System.out.println("Fetched Bedrock Code!");
-                        String bedrockDeviceCode = bedrockMsaDeviceCode.getUserCode();
-                        String response = "<html><body>Java Device Code: " + javaDeviceCode + "<br>Bedrock Device Code: " + bedrockDeviceCode + "</body></html>";
-                        try {
-                            exchange.getResponseHeaders().set("Content-Type", "text/html");
-                            exchange.sendResponseHeaders(200, response.getBytes().length);
-                            OutputStream os = exchange.getResponseBody();
-                            os.write(response.getBytes());
-                            os.close();
-                        } catch (IOException e) {
-                            Logger.LOGGER.error("Error sending response: " + e.getMessage());
-                            throw new RuntimeException(e);
-                        }
-                    }));
-                } catch (Exception e) {
-                    Logger.LOGGER.error("Error during Bedrock session: " + e.getMessage());
-                    throw new RuntimeException(e);
-                }
-            }));
+            fetchBedrockSession(httpClient, exchange, javaDeviceCode);
         } catch (Exception e) {
-            Logger.LOGGER.error("Error during Java session: " + e.getMessage());
+            Logger.LOGGER.error("Error during Bedrock session: " + e.getMessage());
             throw new RuntimeException(e);
         }
+    });
+}
+
+private void fetchBedrockSession(HttpClient httpClient, HttpExchange exchange, String javaDeviceCode) {
+    StepFullBedrockSession.FullBedrockSession bedrockSession = MinecraftAuth.BEDROCK_DEVICE_CODE_LOGIN.getFromInput(httpClient, bedrockMsaDeviceCode -> {
+        System.out.println("Fetched Bedrock Code!");
+        String bedrockDeviceCode = bedrockMsaDeviceCode.getUserCode();
+        sendResponse(exchange, javaDeviceCode, bedrockDeviceCode);
+    });
+}
+
+private void sendResponse(HttpExchange exchange, String javaDeviceCode, String bedrockDeviceCode) {
+    String response = "<html><body>Java Device Code: " + javaDeviceCode + "<br>Bedrock Device Code: " + bedrockDeviceCode + "</body></html>";
+    try {
+        exchange.getResponseHeaders().set("Content-Type", "text/html");
+        exchange.sendResponseHeaders(200, response.getBytes().length);
+        OutputStream os = exchange.getResponseBody();
+        os.write(response.getBytes());
+        os.close();
+    } catch (IOException e) {
+        Logger.LOGGER.error("Error sending response: " + e.getMessage());
+        throw new RuntimeException(e);
     }
+}
+
+
 }
