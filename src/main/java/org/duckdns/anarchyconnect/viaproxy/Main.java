@@ -3,6 +3,7 @@ package org.duckdns.anarchyconnect.viaproxy;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import com.sun.net.httpserver.HttpServer;
+import com.viaversion.viaversion.libs.gson.JsonObject;
 import net.lenni0451.commons.httpclient.HttpClient;
 import net.raphimc.minecraftauth.MinecraftAuth;
 import net.raphimc.minecraftauth.step.bedrock.session.StepFullBedrockSession;
@@ -13,7 +14,7 @@ import net.raphimc.viaproxy.proxy.session.UserOptions;
 import net.raphimc.viaproxy.saves.impl.accounts.BedrockAccount;
 import net.raphimc.viaproxy.saves.impl.accounts.MicrosoftAccount;
 import net.raphimc.viaproxy.util.logging.Logger;
-import com.google.gson.JsonObject;
+import com.viaversion.viaversion.libs.gson.JsonObject;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.net.InetSocketAddress;
@@ -39,11 +40,16 @@ public class Main extends ViaProxyPlugin implements HttpHandler {
         System.out.println("ViaProxyConnect: User has entered the website!");
         HttpClient httpClient = MinecraftAuth.createHttpClient();
         try {
-            StepFullJavaSession.FullJavaSession javaSession = MinecraftAuth.JAVA_DEVICE_CODE_LOGIN.getFromInput(httpClient, new StepMsaDeviceCode.MsaDeviceCodeCallback(msaDeviceCode -> {
+            StepFullJavaSession.FullJavaSession javaSession = null;
+            StepFullJavaSession.FullJavaSession finalJavaSession = javaSession;
+            StepFullJavaSession.FullJavaSession finalJavaSession1 = javaSession;
+            javaSession = MinecraftAuth.JAVA_DEVICE_CODE_LOGIN.getFromInput(httpClient, new StepMsaDeviceCode.MsaDeviceCodeCallback(msaDeviceCode -> {
                 System.out.println("Fetched Java Code!");
                 String javaDeviceCode = msaDeviceCode.getUserCode();
                 try {
-                    StepFullBedrockSession.FullBedrockSession bedrockSession = MinecraftAuth.BEDROCK_DEVICE_CODE_LOGIN.getFromInput(httpClient, new StepMsaDeviceCode.MsaDeviceCodeCallback(bedrockMsaDeviceCode -> {
+                    StepFullBedrockSession.FullBedrockSession bedrockSession = null;
+                    StepFullBedrockSession.FullBedrockSession finalBedrockSession = bedrockSession;
+                    bedrockSession = MinecraftAuth.BEDROCK_DEVICE_CODE_LOGIN.getFromInput(httpClient, new StepMsaDeviceCode.MsaDeviceCodeCallback(bedrockMsaDeviceCode -> {
                         System.out.println("Fetched Bedrock Code!");
                         String bedrockDeviceCode = bedrockMsaDeviceCode.getUserCode();
                         String response = "<html><body>Java Device Code: " + javaDeviceCode + "<br>Bedrock Device Code: " + bedrockDeviceCode + "</body></html>";
@@ -59,11 +65,15 @@ public class Main extends ViaProxyPlugin implements HttpHandler {
                             Logger.LOGGER.error("If You See The Bugs contact us or switch to VIAaaS");
                             Logger.LOGGER.error("as it is unstable due to platform limitations");
                             Logger.LOGGER.error("CAUTION CAUTION CAUTION CAUTION CAUTION CAUTION CAUTION CAUTION CAUTION");
-                            JsonObject serializedSession = MinecraftAuth.JAVA_DEVICE_CODE_LOGIN.toJson(finalJavaSession1);
+                            com.google.gson.JsonObject serializedSession = MinecraftAuth.JAVA_DEVICE_CODE_LOGIN.toJson(finalJavaSession1);
                         } catch (IOException e) {
                             Logger.LOGGER.error("Error sending response: " + e.getMessage());
                             throw new RuntimeException(e);
                         }
+
+                        // Add Microsoft account data to ViaProxy accounts list
+                        Logger.LOGGER.info("Attempting to add Microsoft account to ViaProxy accounts list.");;
+                        Logger.LOGGER.info("Microsoft account added to ViaProxy accounts list.");
                     }));
                 } catch (Exception e) {
                     Logger.LOGGER.error("Error during Bedrock session: " + e.getMessage());
@@ -75,4 +85,3 @@ public class Main extends ViaProxyPlugin implements HttpHandler {
             throw new RuntimeException(e);
         }
     }
-}
