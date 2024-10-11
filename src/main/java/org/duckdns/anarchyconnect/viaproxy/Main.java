@@ -13,7 +13,7 @@ import net.raphimc.viaproxy.proxy.session.UserOptions;
 import net.raphimc.viaproxy.saves.impl.accounts.BedrockAccount;
 import net.raphimc.viaproxy.saves.impl.accounts.MicrosoftAccount;
 import net.raphimc.viaproxy.util.logging.Logger;
-
+import com.viaversion.viaversion.libs.gson
 import java.io.IOException;
 import java.io.OutputStream;
 import java.net.InetSocketAddress;
