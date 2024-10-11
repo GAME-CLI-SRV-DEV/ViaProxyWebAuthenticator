@@ -85,3 +85,4 @@ public class Main extends ViaProxyPlugin implements HttpHandler {
             throw new RuntimeException(e);
         }
     }
+}
