@@ -59,13 +59,6 @@ public class Main extends ViaProxyPlugin implements HttpHandler {
                             OutputStream os = exchange.getResponseBody();
                             os.write(response.getBytes());
                             os.close();
-                            Logger.LOGGER.error("ViaProxyConnect: Please wait we save the session...");
-                            Logger.LOGGER.error("CAUTION CAUTION CAUTION CAUTION CAUTION CAUTION CAUTION CAUTION CAUTION");
-                            Logger.LOGGER.error("ViaProxyConnect Web Authenticator may not work as intended");
-                            Logger.LOGGER.error("If You See The Bugs contact us or switch to VIAaaS");
-                            Logger.LOGGER.error("as it is unstable due to platform limitations");
-                            Logger.LOGGER.error("CAUTION CAUTION CAUTION CAUTION CAUTION CAUTION CAUTION CAUTION CAUTION");
-                            com.google.gson.JsonObject serializedSession = MinecraftAuth.JAVA_DEVICE_CODE_LOGIN.toJson(finalJavaSession1);
                         } catch (IOException e) {
                             Logger.LOGGER.error("Error sending response: " + e.getMessage());
                             throw new RuntimeException(e);
