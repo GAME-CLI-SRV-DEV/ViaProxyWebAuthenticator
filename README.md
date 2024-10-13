@@ -2,7 +2,7 @@
 a Web Authenticator Demander for ViaProxy Public instances
 
 > [!CAUTION]
-> this plugin is in beta and the Plugin has errors. check ViaVersion/ViaProxy#303 for more.
+> this plugin is in beta and the Plugin has decided to rewrite the base into ktor based netty server.
 
 # How to host Public Instances
 if You are using hosting, you need to just use nip.io or forward their ip to Wildcard DNS Services such as DynuDNS or DuckDNS as the DNS service is for Paid Plan.
