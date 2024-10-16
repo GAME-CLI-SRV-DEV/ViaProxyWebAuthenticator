@@ -11,10 +11,11 @@ import net.raphimc.minecraftauth.step.java.session.StepFullJavaSession
 import net.raphimc.minecraftauth.step.msa.StepMsaDeviceCode
 import net.raphimc.viaproxy.plugins.ViaProxyPlugin
 import net.raphimc.viaproxy.util.logging.Logger
+import net.raphimc.viaproxy.ViaProxy
 
 class Main : ViaProxyPlugin() {
     override fun onEnable() {
-        Logger.LOGGER.info("§bViaProxyConnect Web Authenticator Version 1, Designed for ViaVersion's ViaProxy.")
+        Logger.LOGGER.info("ViaProxyConnect Plugbase System: RUN on []")
         embeddedServer(Netty, port = 8000) {
             install(DefaultHeaders)
             install(CallLogging)
@@ -45,6 +46,7 @@ class Main : ViaProxyPlugin() {
                         
                         // Add Microsoft account data to ViaProxy accounts list
                         Logger.LOGGER.info("Attempting to add Microsoft account to ViaProxy accounts list.")
+                        ViaProxy.getSaveManager()
                         Logger.LOGGER.info("Microsoft account added to ViaProxy accounts list.")
                     })
                 } catch (e: Exception) {
